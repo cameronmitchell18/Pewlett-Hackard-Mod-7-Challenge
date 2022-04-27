@@ -35,10 +35,31 @@ FROM retirement_titles
 WHERE to_date = '9999-01-01'
 ORDER BY emp_no ASC , to_date DESC;
 
--- employees by jon title who are about to retire 
+-- employees by title who are about to retire 
 SELECT COUNT(unique_titles.emp_no),
 unique_titles.title
 INTO retiring_titles
 FROM unique_titles
 GROUP BY title
 ORDER BY COUNT (title) DESC;
+
+-- D 2 
+
+SELECT DISTINCT ON (e.emp_no) e.emp_no,
+
+	e.first_name,
+	e.last_name,
+	e.birth_date,
+	de.from_date,
+	de.to_date,
+	ti.title 
+	
+--INTO mentorship_eligibilty
+FROM employees AS e
+INNER JOIN dept_employees AS de
+ON (e.emp_no = de.emp_no)
+INNER JOIN titles AS ti
+ON (e.emp_no = ti.emp_no)
+WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+AND (de.to_date = '9999-01-01')
+ORDER BY emp_no;
